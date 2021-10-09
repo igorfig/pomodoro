@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Progress } from './Progress'
+import { Progress } from './styles/Progress'
 
 export default function Circle({ progress }) {
   return (

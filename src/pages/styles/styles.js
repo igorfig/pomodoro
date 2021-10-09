@@ -4,7 +4,6 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
   width: 100%;
   margin: 0 auto;
   background: rgba(238, 238, 238);
@@ -94,14 +93,12 @@ export const Card = styled.div`
 
     }
 
-
-
     button + button {
       margin-left: 10px;
     }
   }
   .progress-bar {
-    width: 225px;
+    width: 240px;
 
     .timer {
       font-weight: bold;
@@ -136,6 +133,7 @@ export const Steps = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: -100px;
 
   span {
     font-size: 20px;
@@ -147,7 +145,7 @@ export const Steps = styled.div`
 
 export const Settings = styled.div`
   z-index: 999;
-  position: absolute;
+  position: fixed;
   margin-top: 7rem;
   width: 480px;
   background: #fff;
@@ -262,4 +260,83 @@ export const Form = styled.form`
 
   
 
+`
+
+export const Text = styled.div`
+  width: 100vw;
+  margin-top: 25vh;
+  padding: 2.4rem 1.4rem;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 30px 30px 30px 30px;
+  @media(max-width: 480px) {
+    margin-top: 35vh;
+  }
+
+  div {
+    margin-bottom: 45px;
+    max-width: 600px;
+    width: 100%;
+
+    h2 {
+      color: #F56960;
+      font-size: 28px;
+
+      @media(max-width: 480px) {
+        font-size: 1.4rem;
+      }
+    }
+    hr {
+      width: 50px;
+      height: 5px;
+      background: #F25F5C;
+      position: relative;
+      float: left;
+      border: 0;
+      margin-top: 5px;
+    }
+
+    p {
+      text-align: justify;
+      margin-top: 30px;
+      color: rgba(0, 0, 0, .6);
+      font-weight: 500;
+      @media(max-width: 480px) {
+        font-size: 14px;
+      }
+      a {
+        text-decoration: none;
+      }
+      strong {
+        color:  #F25F5C;
+      }
+    }
+  }
+`
+
+export const Footer = styled.footer`
+  padding: 10px;
+  text-align: center;
+  color: #292525;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  strong {
+    color: #F25F5C;
+  }
+
+  span {
+    margin-bottom: 20px;
+    a {
+      text-decoration: none;
+    }
+  }
+
+  a + a {
+    margin-left: 10px;
+  }
 `
