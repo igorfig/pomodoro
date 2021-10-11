@@ -2,170 +2,203 @@ import React, { useState, useEffect } from 'react';
 import Switch from "react-switch";
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { ThemeProvider } from 'styled-components'
 
 import { Wrapper, Header, Card, Button, Steps, Settings, Form, Text, Footer } from './styles/styles';
-import Progress from '../components/Progress'
-import StepByStep from '../components/StepByStep'
-import logo from '../images/tomato.svg'
-import close from '../images/close.svg'
-import github from '../images/github.svg'
-import instagram from '../images/instagram.svg'
-import settings from '../images/settings.svg'
-export default function Home() {
-  const [ toggle, setToggle ] = useState(false);
-  const [ minutes, setMinutes ] = useState(25)
-  const [ timerOptionClassName, setTimerOptionClassName ] = useState('pomodoro');
-  const [ progress, setProgress ] = useState(0);
-  const [ switcher, setSwitcher ] = useState(false);
+import { lightTheme, darkTheme } from '../styles/themes/theme';
 
-  const handleChangeTimerOption = event => {  // função temporária, apenas para testes
-    setTimerOptionClassName(event.target.id) 
-    
-    if(event.target.id === 'pomodoro') {
-      setMinutes(25);
-    } else if(event.target.id === 'short-break') {
-      setMinutes(`0`+ 5)
-    } else if(event.target.id === 'long-break') {
-      setMinutes(15)
+import Progress from '../components/Progress/Progress.jsx'
+import StepByStep from '../components/Steps/StepByStep.jsx'
+
+import tomato from '../images/light/tomato.svg'
+import darkTomato from '../images/dark/darkTomato.svg'
+
+import close from '../images/light/close.svg'
+import darkClose from '../images/dark/darkClose.svg'
+
+import github from '../images/light/github.svg'
+import darkGithub from '../images/dark/darkGithub.svg'
+
+import instagram from '../images/instagram.svg'
+
+import darkSettings from '../images/dark/darkSettings.svg'
+import lightSettings from '../images/light/settings.svg'
+
+export default function Home() {
+  /* interface states */
+  const [ toggle, setToggle ] = useState(false);
+  const [ switcher, setSwitcher ] = useState(true);
+  const [ timerOption, setTimerOption ] = useState('pomodoro');
+  const [ theme, setTheme ] = useState(darkTheme)
+  const [ currentButtonColor, setCurrentButtonColor ] = useState(theme.button)
+
+  const [ progress, setProgress ] = useState(0);
+
+  useEffect(() => { 
+    const Colors = {
+      pomodoro: theme.button,
+      'short-break': "#468E91",
+      'long-break': "#437EA8"
     }
+    setCurrentButtonColor(Colors[timerOption])
+  }, [theme.button, timerOption])
+
+  useEffect(() => switcher ? setTheme(darkTheme) : setTheme(lightTheme), [switcher]);
+  function handleSubmit() {
+    setToggle(false);
   }
 
   const handleToggle = () => setToggle(prevState => !prevState)
   return (
-    <Wrapper>
-      <Header>
-        <div>
-          <img src={logo} alt="Pomodoro" />
-          <h1>Pomofocus</h1>
-        </div> 
-        <button type="button" onClick={handleToggle}>
-          <img src={settings} alt="Configurações" />
-        </button>
-        
-      </Header>
-      
-      <hr />
-
-      <Card>
-      <div className="options">
-        <button type="button" id="pomodoro" className={'pomodoro' === timerOptionClassName ? 'selected' : '' } onClick={handleChangeTimerOption}>Pomodoro</button>
-        <button type="button" id="short-break" className={'short-break' === timerOptionClassName ? 'selected' : '' } onClick={handleChangeTimerOption}>Pausa pequena</button>
-        <button type="button" id="long-break" className={'long-break' === timerOptionClassName ? 'selected' : '' } onClick={handleChangeTimerOption}>Pausa longa</button>
-      </div>
-
-       <div className="progress-bar">
-         <CircularProgressbarWithChildren 
-            value={17}
-            maxValue={25}
-            minValue={0}
-            strokeWidth={4}
-            styles={{
-              path: {
-                stroke: "#D35149"
-              },
-      
-              trail: {
-                stroke:"rgba(117, 116, 116, 0.1)"
-              }
-            }}
-        >
-        <div className="timer">
-          {`${minutes}:00`}
-        </div>
-        <div className="description"> { minutes === 25 ? 'Hora de focar!' : 'Hora de dar uma pausa!' } </div>
-          </CircularProgressbarWithChildren>
-        </div>
-
-        <Button 
-          bgColor="#D35149"
-          type="button">Iniciar</Button>
-      </Card>
-
-      <Steps>
-        <span>#{progress < 4 ? progress + 1 : progress}</span>
-        <Progress 
-          progress={progress} 
-          />
-      </Steps>
-
-      <Text>
-        <div>
-          <h2>Qual a finalidade desta aplicação?</h2>
-          <hr />
+    <ThemeProvider theme={theme}>
+      <Wrapper>
+        <Header>
+          <div>
+            <img src={theme === darkTheme ? darkTomato : tomato} alt="Pomodoro" />
+            <h1>Pomofocus</h1>
+          </div> 
+          <button type="button" onClick={handleToggle}>
+            <img src={theme === lightTheme ? lightSettings : darkSettings} alt="Configurações" />
+          </button>
           
-          <p>Este aplicativo é um temporizador online e personalizável. O objetivo deste aplicativo é simples, ajudá-lo a manter foco para uma melhor realização de suas tarefas, sejam elas trabalhos ou estudos, se inspirando na técnica pomodoro. Saiba mais sobre esta técnica em <a target="_blank" rel="external" href="https://pt.wikipedia.org/wiki/T%C3%A9cnica_pomodoro"><strong>Wikipedia.</strong></a> </p>
-        </div>
+        </Header>
         
-        <div>
-          <h2>O que é a técnica Pomodoro?</h2>
-          <hr />
-          <p>
-            A técnica pomodoro foi criado por pelo italiano Francesco Cirillo no final dos anos 80, que procurava uma forma de aumentar sua produtividade nos estudos e trabalho. A técnica deriva seu nome da palavra italiana pomodoro (tomate), como referência ao popular cronômetro gastronômico na forma dessa fruta. A técnica utiliza um cronômetro para dividir a realização de uma tarefa em pequenos intervalos, tradicionalmente de 5 minutos a cada 25 minutos, nos 25 minutos deve ser mantido o foco total na tarefa, após o cronômetro disparar deve-se descansar por 5 minutos, sendo um ciclo de 4 etapas, na fim do ciclo é dado um descanso mais longo de 15 minutos 
-          </p>
-        </div>
-        <div>
-          <h2>Como usar a técnica Pomodoro?</h2>
-          <hr />
-          <StepByStep />
-        </div>
-      </Text>
+        <hr />
 
-      <Footer>
-        <span>Feito com &lt;3 by <a href="mailto:igorfigueiredors@gmail.com"><strong>Igor Figueiredo</strong></a></span>
-        <div>
-          <a target="_blank" rel="external" href="https://www.github.com/igorfig">
-           <img src={github} alt="github" />
-          </a>
-          <a target="_blank" rel="external" href="https://www.instagram.com/igufs123/">
-            <img src={instagram} alt="instagram" />
-          </a>
+        <Card color={currentButtonColor}>
+        <div className="options">
+          <button 
+            type="button" 
+            id="pomodoro" 
+            className={'pomodoro' === timerOption ? 'selected' : '' } 
+            onClick={event => setTimerOption(event.target.id)}>Pomodoro</button>
+
+          <button 
+            type="button" 
+            id="short-break" className={'short-break' === timerOption ? 'selected' : '' } 
+            onClick={event => setTimerOption(event.target.id) }>Pausa pequena</button>
+
+          <button 
+            type="button" 
+            id="long-break" className={'long-break' === timerOption ? 'selected' : '' } 
+            onClick={event => setTimerOption(event.target.id) }>Pausa longa</button>
         </div>
-        </Footer>
-      { toggle && (
-         <Settings>
-          <div className="header">
-            <h2>Configurações do Timer</h2>
-            <button type="button" onClick={() => setToggle(prevState => !prevState)}>
-              <img src={close} alt="Fechar" />
-            </button>
+
+        <div className="progress-bar">
+          <CircularProgressbarWithChildren 
+              value={17}
+              maxValue={25} // default value
+              minValue={0}
+              strokeWidth={4}
+              styles={{
+                path: {
+                  stroke: currentButtonColor
+                },
+        
+                trail: {
+                  stroke:"rgba(117, 116, 116, 0.1)"
+                }
+              }}
+          >
+          <div className="timer">
+              17:50
+          </div>
+          <div className="description"> { timerOption === 'pomodoro' ? 'Hora de focar!' : 'Hora de dar uma pausa!' } </div>
+            </CircularProgressbarWithChildren>
           </div>
 
-          <hr />
+          <Button 
+            background={currentButtonColor}
+            type="button">Iniciar</Button>
+        </Card>
 
-          <Form>
-            <h3>Tempo ( minutos )</h3>
-            <div>
-              <div> 
-                <label htmlFor="pomodoro-input">Pomodoro</label>
-                <input type="number" name="pomodoro" id="pomodoro-input" value={25}/>
-              </div>
-              <div> 
-                <label htmlFor="short-break-input">Pausa curta</label>
-                <input type="number" name="short-break" id="short-break-input" value={5} />
-              </div>
+        <Steps>
+          <span>#{progress < 4 ? progress + 1 : progress}</span>
+          <Progress 
+            progress={progress}
+            color={theme.stroke} 
+            />
+        </Steps>
+
+        <Text>
+          <div>
+            <h2>Qual a finalidade desta aplicação?</h2>
+            <hr />
+            
+            <p>Este aplicativo é um temporizador online e personalizável. O objetivo deste aplicativo é simples, ajudá-lo a manter foco para uma melhor realização de suas tarefas, sejam elas trabalhos ou estudos, se inspirando na técnica pomodoro. Saiba mais sobre esta técnica em <a target="_blank" rel="noreferrer" href="https://pt.wikipedia.org/wiki/T%C3%A9cnica_pomodoro"><strong>Wikipedia.</strong></a> </p>
+          </div>
+            
+          <div>
+            <h2>O que é a técnica Pomodoro?</h2>
+            <hr />
+            <p>
+              A técnica pomodoro foi criado por pelo italiano Francesco Cirillo no final dos anos 80, que procurava uma forma de aumentar sua produtividade nos estudos e trabalho. A técnica deriva seu nome da palavra italiana pomodoro (tomate), como referência ao popular cronômetro gastronômico na forma dessa fruta. A técnica utiliza um cronômetro para dividir a realização de uma tarefa em pequenos intervalos, tradicionalmente de 5 minutos a cada 25 minutos, nos 25 minutos deve ser mantido o foco total na tarefa, após o cronômetro disparar deve-se descansar por 5 minutos, sendo um ciclo de 4 etapas, na fim do ciclo é dado um descanso mais longo de 15 minutos.
+            </p>
+          </div>
+          <div>
+            <h2>Como usar a técnica Pomodoro?</h2>
+            <hr />
+            <StepByStep />
+          </div>
+        </Text>
+
+        <Footer>
+          <span>Feito com &lt;3 by <a rel="noreferrer" href="mailto:igorfigueiredors@gmail.com"><strong>Igor Figueiredo</strong></a></span>
+          <div>
+            <a target="_blank" rel="noreferrer" href="https://www.github.com/igorfig">
+            <img src={theme === darkTheme ? darkGithub : github} alt="github" />
+            </a>
+            <a target="_blank" rel="noreferrer" href="https://www.instagram.com/igufs123/">
+              <img src={instagram} alt="instagram" />
+            </a>
+          </div>
+          </Footer>
+        { toggle && (
+          <Settings>
+            <div className="header">
+              <h2>Configurações do Timer</h2>
+              <button type="button" onClick={() => setToggle(prevState => !prevState)}>
+                <img src={theme === darkTheme ? close : darkClose} alt="Fechar" />
+              </button>
+            </div>
+
+            <hr />
+
+            <Form onSubmit={handleSubmit}>
+              <h3>Tempo ( minutos )</h3>
               <div>
-                <label htmlFor="long-break-input">Pausa longa</label>
-                <input type="number" name="long-break" id="long-break-input" value={15} />
-              </div>         
-            </div>
-            <hr />
+                <div> 
+                  <label htmlFor="pomodoro-input">Pomodoro</label>
+                  <input type="number" name="pomodoro" id="pomodoro-input" defaultValue={25} />
+                </div>
+                <div> 
+                  <label htmlFor="short-break-input">Pausa curta</label>
+                  <input type="number" name="short-break" id="short-break-input" defaultValue={5} />
+                </div>
+                <div>
+                  <label htmlFor="long-break-input">Pausa longa</label>
+                  <input type="number" name="long-break" id="long-break-input" defaultValue={15} />
+                </div>         
+              </div>
+              <hr />
 
-            <div className="set-interval">
-              <label htmlFor="set-interval-input">Intervalo entre pausas longas</label>
-              <input type="number" name="interval" id="set-interval-input" value={4}/>
-            </div>
+              <div className="set-interval">
+                <label htmlFor="set-interval-input">Intervalo entre pausas longas</label>
+                <input type="number" name="interval" id="set-interval-input" defaultValue={4}/>
+              </div>
 
-            <hr />
+              <hr />
 
-            <div className="change-theme">
-              <h3>Tema escuro ( em breve )</h3>
-              <Switch onChange={() => setSwitcher(prevState => !prevState)} checked={switcher} onColor="#000"/>
-            </div>
-           
-            <Button type="submit" bgColor="rgba(0, 0, 0, .8)">Salvar</Button>
-         </Form>
-      </Settings>
-     ) }
-    </Wrapper>
+              <div className="change-theme">
+                <h3>Tema escuro ( em breve )</h3>
+                <Switch onChange={() => setSwitcher(prevState => !prevState)} checked={switcher} onColor="#000"/>
+              </div>
+            
+              <Button type="submit" background={currentButtonColor}>Salvar</Button>
+          </Form>
+        </Settings>
+      ) }
+      </Wrapper>
+    </ThemeProvider>
   )
 }

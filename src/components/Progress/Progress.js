@@ -12,7 +12,7 @@ export const Progress = styled.div`
       border-radius: 50%;
 
       &.completed {
-        background: #D35149;
+        background: ${props => ( props.color )};
       }
     }
     

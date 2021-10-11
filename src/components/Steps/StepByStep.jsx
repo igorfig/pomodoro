@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { List } from './styles/StepByStep'
+import { List } from './StepByStep'
 
 export default function StepByStep() {
   return (

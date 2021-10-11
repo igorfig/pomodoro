@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   margin: 0 auto;
-  background: rgba(238, 238, 238);
+  background: ${({ theme }) => theme.main_bg};
   
   hr {
     max-width: 80%;
@@ -42,25 +42,29 @@ export const Header = styled.div`
     flex-direction: row;
     
     h1 {
-    font-size: 1.6rem;
-    font-weight: bold;
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
-    color: #292525;
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      color: ${({ theme } ) => ( theme.color )};
+    }
   }
 
+  button {
+    background: transparent;
   }
+
 
 `
 export const Card = styled.div`
+  margin-top: 2.4rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;;
+  align-items: center;
   max-width: 500px;
   width: 100%;
-  background-color: rgba(255,255,255,0.1);
   padding: 1rem;
   border-radius: 6px;
 
@@ -74,19 +78,19 @@ export const Card = styled.div`
     margin: 10px 0 30px 0;    
 
     button {
-      color: #292525;
+      color: ${({ theme } ) => ( theme.color )};
       font-size: 18px;
       font-weight: 500;
       padding: 8px;
       background: transparent;
 
       &.selected {
-        background: rgba(0,0,0,0.1);
+        background: ${({ theme }) => theme.selected };
         font-weight: bold;
         border-radius: 3px;
-        color: #D35149;
+        color: ${props => ( props.color )};
       }
-
+      
       @media(max-width: 480px) {
         font-size: 14px;
       }      
@@ -104,13 +108,13 @@ export const Card = styled.div`
       font-weight: bold;
       font-size: 48px;
       margin-bottom: 10px;
-      color: #292525;
+      color: ${({ theme } ) => ( theme.color )};
     }
 
     .description {
-      font-weight: 400;
+      font-weight: 500;
       font-size: 14px;
-      color: #292525;
+      color: ${({ theme } ) => ( theme.color )};
     }
   }
 `
@@ -120,12 +124,10 @@ export const Button = styled.button`
   width: 100%;
   margin-top: 30px;
   border-radius: 100px;
-  background: #fff ;
-
   font-size: 20px;
   font-weight: bold;
-  color: white;
-  background: ${props => ( props.bgColor )};
+  color: #f6f8fd;
+  background: ${props => ( props.background )};
   `
 
 export const Steps = styled.div`
@@ -137,7 +139,7 @@ export const Steps = styled.div`
 
   span {
     font-size: 20px;
-    color: #292929;
+    color: ${({ theme } ) => ( theme.color )};
     opacity: .6;
     font-weight: 700;
   }
@@ -148,9 +150,8 @@ export const Settings = styled.div`
   position: fixed;
   margin-top: 7rem;
   width: 480px;
-  background: #fff;
+  background: ${({ theme }) => theme.settings_bg};
   padding: 1.2rem;
-  color: #fff;
   border-radius: 10px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 
@@ -168,7 +169,7 @@ export const Settings = styled.div`
     h2 {
       font-size: 16px;
       font-weight: 500;
-      color: rgba(0, 0, 0, .5);
+      color: ${({ theme }) => theme.light }
     }
 
     button {
@@ -186,26 +187,27 @@ export const Settings = styled.div`
 
   h3 {
     font-size: 15px;
-    color: #eee;
+    color: ${({ theme } ) => ( theme.color )};
     margin-bottom: 10px;
   }
 `
 
 export const Form = styled.form`
   h3 {
-    color: #292929;
+    color: ${({ theme } ) => ( theme.color )};
+    font-weight: 500;
   } 
 
   input {
-    background: rgba(238, 238, 238, 0.8);
-    color: rgba(41, 41, 41, 0.801);
+    background: ${({ theme }) => theme.input_bg};
+    color: #212025;
     padding: 10px;
     border-radius: 6px;
     font-size: 16px;
   }
 
   label {
-    color: rgba(0, 0, 0, .5);
+    ${({ theme }) => theme.color === '#151620' ? ({ color: 'rgb(21, 22, 32, 0.7)' }) : ({ color: 'rgba(246, 248, 253, 0.7)' }) }
   }
 
   div {
@@ -238,12 +240,10 @@ export const Form = styled.form`
 
     label {
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 500;
     }
 
     input {
-      background: rgba(238, 238, 238, 0.8);
-      color: rgba(41, 41, 41, 0.801);
       padding: 10px;
       width: 60px;
     }
@@ -257,16 +257,13 @@ export const Form = styled.form`
       margin-bottom: 60px;
   }
   }
-
-  
-
 `
 
 export const Text = styled.div`
   width: 100vw;
   margin-top: 25vh;
   padding: 2.4rem 1.4rem;
-  background: #fff;
+  background: ${({ theme}) => theme.text_bg};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -281,7 +278,7 @@ export const Text = styled.div`
     width: 100%;
 
     h2 {
-      color: #F56960;
+      color: ${({ theme } ) => ( theme.subtitle )};
       font-size: 28px;
 
       @media(max-width: 480px) {
@@ -291,7 +288,7 @@ export const Text = styled.div`
     hr {
       width: 50px;
       height: 5px;
-      background: #F25F5C;
+      background: ${({ theme}) => theme.row};
       position: relative;
       float: left;
       border: 0;
@@ -301,7 +298,7 @@ export const Text = styled.div`
     p {
       text-align: justify;
       margin-top: 30px;
-      color: rgba(0, 0, 0, .6);
+      color: ${({ theme } ) => ( theme.text )};
       font-weight: 500;
       @media(max-width: 480px) {
         font-size: 14px;
@@ -310,7 +307,7 @@ export const Text = styled.div`
         text-decoration: none;
       }
       strong {
-        color:  #F25F5C;
+        color: ${({ theme }) => ( theme.row )};
       }
     }
   }
@@ -319,14 +316,14 @@ export const Text = styled.div`
 export const Footer = styled.footer`
   padding: 10px;
   text-align: center;
-  color: #292525;
+  color: ${({ theme } ) => ( theme.color )};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
   strong {
-    color: #F25F5C;
+    color:${({ theme }) => ( theme.row )};
   }
 
   span {

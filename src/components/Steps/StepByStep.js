@@ -8,7 +8,7 @@ export const List = styled.ol`
    padding: 1rem;
 
     li {
-      color: rgba(0, 0, 0, .6);
+      color: ${({ theme } ) => ( theme.text )};
     }
 
     li + li {

@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { Progress } from './styles/Progress'
+import { Progress } from './Progress'
 
-export default function Circle({ progress }) {
+export default function Circle({ progress, color }) {
   return (
     <>
-      <Progress>
+      <Progress color={color}>
         <div className={progress >= 1 ? 'completed' : ''}></div>
         <div className={progress >= 2 ? 'completed' : ''}></div>
         <div className={progress >= 3 ? 'completed' : ''}></div>
