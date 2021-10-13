@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Progress = styled.div`
+export const Wrapper = styled.div`
     display: flex;
     align-items: center;
     margin-top: 15px;
