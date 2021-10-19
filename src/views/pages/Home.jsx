@@ -12,20 +12,27 @@ import Main from '../partials/Main.jsx'
 import Footer from '../partials/Footer.jsx'
 
 export default function Home() {
+  // localStorage preset data
+  const preferences = JSON.parse(localStorage.getItem("user_preferences")) || {
+            'pomodoro': 25,
+            'short-break': 5,
+            'long-break': 15,
+            'long-break-interval': 4,
+            'theme':'light'
+  };
   /* interface states */
   const [ toggle, setToggle ] = useState(false);
-  const [ theme, setTheme ] = useState(darkTheme)
-
+  const [ theme, setTheme ] = useState(preferences.theme === 'dark' ? darkTheme : lightTheme);
   const handleUpdateTheme = switcher => switcher ? setTheme(darkTheme) : setTheme(lightTheme)
   return (
     <ThemeProvider theme={theme}>
       <Wrapper>
         <Header theme={theme} onToggle={setToggle} isToggle={toggle}/>
-        { toggle && (
-          <TimerSettings currentTheme={theme} render={handleUpdateTheme} onToggle={setToggle}/>
-        ) }
+        { 
+          toggle && <TimerSettings currentTheme={theme} render={handleUpdateTheme} onToggle={setToggle} preferences={preferences}/>
+        }
         <hr />
-        <Main theme={theme}/>
+        <Main theme={theme} preferences={preferences}/>
         <Footer theme={theme}/>
       </Wrapper>
     </ThemeProvider>

@@ -60,13 +60,14 @@ export const HeaderWrapper = styled.header`
     max-width: 800px;
     width: 100%;
     padding: 1rem;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content:space-between;
 
     @media(max-width: 480px) {
         width: 400px;
+        margin-bottom: 30px;
     }
 
     div {  

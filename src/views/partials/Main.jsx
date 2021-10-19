@@ -4,11 +4,11 @@ import { MainWrapper } from '../styles/styles.js';
 import Card from '../../components/Card/Card.jsx';
 import AboutPomodoro from './AboutPomodoro/AboutPomodoro'
 
-export default function Main({ theme }) {
+export default function Main({ theme, preferences }) {
  
     return (
         <MainWrapper>
-                <Card theme={theme}/>
+                <Card theme={theme} preferences={preferences}/>
                 <AboutPomodoro />
         </MainWrapper>
     )
