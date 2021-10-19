@@ -84,6 +84,8 @@ export default function TimerSettings({ currentTheme, render, onToggle, preferen
                 <div className="set-interval">
                     <label htmlFor="set-interval-input">Intervalo entre pausas longas</label>
                     <input 
+                        min={1}
+                        max={10}
                         value={longBreakInterval}
                         type="number" 
                         name="interval" 

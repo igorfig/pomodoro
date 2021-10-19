@@ -71,8 +71,8 @@ export default function Card({ theme, preferences }) {
                     setTimeout(() => { 
                         if(timerOption === 'pomodoro') {
                             setProgress(prevState => prevState + 1)
-                            progressBeforeBreak < 4 && setProgressBeforeBreak(prevState => prevState + 1)
-                            progressBeforeBreak + 1 < 4 ? setTimerOption('short-break') : setTimerOption('long-break')
+                            progressBeforeBreak < preferences['long-break-interval'] && setProgressBeforeBreak(prevState => prevState + 1)
+                            progressBeforeBreak + 1 < preferences['long-break-interval'] ? setTimerOption('short-break') : setTimerOption('long-break')
                         } else {
                             setTimerOption('pomodoro')
                         }
@@ -101,7 +101,7 @@ export default function Card({ theme, preferences }) {
             | Pomodoro Timer
         `
     }, [minutes, seconds])
-    
+
     // current button color update
     useEffect(() => { 
         const Colors = {
@@ -163,6 +163,7 @@ export default function Card({ theme, preferences }) {
                 <Steps>
                     <span>#{progress}</span>
                     <Progress 
+                        interval= {preferences['long-break-interval']}
                         progress={progressBeforeBreak}
                         color={currentButtonColor} 
                         />
