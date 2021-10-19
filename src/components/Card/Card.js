@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
 export const Section = styled.section`
-  margin-top: 2.4rem;
+  margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   max-width: 500px;
   width: 100%;
-  padding: 1rem;
+  padding: 0 1rem;
   border-radius: 6px;
 
   @media(max-width: 480px) {
