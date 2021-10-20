@@ -25,16 +25,19 @@ export default function Card({ theme, preferences }) {
         'short-break': preferences['short-break'],
         'long-break': preferences['long-break']
     }),[preferences])
-
-    function handleChangeTimerOption(event) {
+    
+    useEffect(() => {
         const Colors = {
             pomodoro: theme.button,
             'short-break': "#468E91",
             'long-break': "#437EA8"
           }
+          setCurrentButtonColor(Colors[timerOption])
+    }, [theme.button, timerOption])
+
+    function handleChangeTimerOption(event) {
         if(!start) {
             setTimerOption(event.target.id)
-            setCurrentButtonColor(Colors[event.target.id])
         } else {
             const switchConfirm = window.confirm('O crônometro ainda está em execução, Tem certeza que deseja mudar?')
             if(switchConfirm) {
@@ -42,7 +45,6 @@ export default function Card({ theme, preferences }) {
                 setMinutes(timer[timerOption]);
                 setTotalOfSeconds(timer[timerOption] * 60 + seconds);
                 setTimerOption(event.target.id);
-                setCurrentButtonColor(Colors[event.target.id])
             }
         }
     }
@@ -97,7 +99,6 @@ export default function Card({ theme, preferences }) {
         setMinutes(prevState => prevState - 1);
         setSeconds(59);
     }
-
 
     // document title changes
     useEffect(() => {
