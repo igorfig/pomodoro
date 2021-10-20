@@ -8,13 +8,13 @@ export const lightTheme = {
   input_bg: "#eee",
   selected: 'rgba(0,0,0,0.1)',
   text_bg: '#fff',
-  subtitle: '#F56960',
+  subtitle: '#1b1b1bc9',
   text: 'rgba(0, 0, 0, .6)',
   row: '#F25F5C'
 };
 
 export const darkTheme = {
-  main_bg: '#212025',
+  main_bg: '#303438',
   color: '#f6f8fd',
   stroke: '#683DCC',
   button: '#8257E6',
