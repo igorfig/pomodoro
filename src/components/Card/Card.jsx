@@ -20,41 +20,39 @@ export default function Card({ theme, preferences }) {
     const [ seconds, setSeconds ] = useState(0);
     const [ totalOfSeconds, setTotalOfSeconds ] = useState(timer[timerOption] * 60 + seconds) //logical side
     const [ start, setStart ] = useState(false);
-
     useEffect(() => setTimer({
         'pomodoro': preferences['pomodoro'],
         'short-break': preferences['short-break'],
         'long-break': preferences['long-break']
     }),[preferences])
 
-    const handleStart = event => { 
-        setStart(prevState => !prevState)
-    }
-
-    useEffect(() => {
-       setMinutes(timer[timerOption]);
-       setTotalOfSeconds(timer[timerOption] * 60 + seconds);
-       setSeconds(0);
-       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [timer, timerOption])
-
-    function updateMinutes() {
-        setMinutes(prevState => prevState - 1);
-        setSeconds(59);
-    }
-
-
-    useEffect(() => {
-        if(start) {
+    function handleChangeTimerOption(event) {
+        const Colors = {
+            pomodoro: theme.button,
+            'short-break': "#468E91",
+            'long-break': "#437EA8"
+          }
+        if(!start) {
+            setTimerOption(event.target.id)
+            setCurrentButtonColor(Colors[event.target.id])
+        } else {
             const switchConfirm = window.confirm('O crônometro ainda está em execução, Tem certeza que deseja mudar?')
             if(switchConfirm) {
                 setStart(false);
                 setMinutes(timer[timerOption]);
                 setTotalOfSeconds(timer[timerOption] * 60 + seconds);
+                setTimerOption(event.target.id);
+                setCurrentButtonColor(Colors[event.target.id])
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [timerOption])
+    }
+
+    useEffect(() => {
+       setMinutes(timer[timerOption]);
+       setTotalOfSeconds(timer[timerOption] * 60);
+       setSeconds(0);
+       // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [timer, timerOption])
 
     useEffect(() => {
         if(start) {
@@ -81,12 +79,24 @@ export default function Card({ theme, preferences }) {
                         }
                     }, 300)
                     setTotalOfSeconds(timer[timerOption] * 60)
-                    
+                    const audio = new Audio('./audio/alarm.mp3');
+                    audio.play();
                 }
+
+            if(timerOption === 'pomodoro' && preferences['pomodoro'] >= 6)  {
+                if(totalOfSeconds === 5 * 60) {
+
+                }
+            }
             return () => clearInterval(interval)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [start, minutes, seconds, totalOfSeconds])
+
+    function updateMinutes() {
+        setMinutes(prevState => prevState - 1);
+        setSeconds(59);
+    }
 
 
     // document title changes
@@ -102,16 +112,6 @@ export default function Card({ theme, preferences }) {
         `
     }, [minutes, seconds])
 
-    // current button color update
-    useEffect(() => { 
-        const Colors = {
-          pomodoro: theme.button,
-          'short-break': "#468E91",
-          'long-break': "#437EA8"
-        }
-        setCurrentButtonColor(Colors[timerOption])
-      }, [theme.button, timerOption])
-
     return (
         <Section color={currentButtonColor}>
             <div className="options">
@@ -119,17 +119,17 @@ export default function Card({ theme, preferences }) {
                 type="button" 
                 id="pomodoro" 
                 className={'pomodoro' === timerOption ? 'selected' : '' } 
-                onClick={event => setTimerOption(event.target.id)}>Pomodoro</button>
+                onClick={handleChangeTimerOption}>Pomodoro</button>
 
                 <button 
                 type="button" 
                 id="short-break" className={'short-break' === timerOption ? 'selected' : '' } 
-                onClick={event => setTimerOption(event.target.id) }>Pausa pequena</button>
+                onClick={handleChangeTimerOption}>Pausa pequena</button>
 
                 <button 
                 type="button" 
                 id="long-break" className={'long-break' === timerOption ? 'selected' : '' } 
-                onClick={event => setTimerOption(event.target.id) }>Pausa longa</button>
+                onClick={handleChangeTimerOption}>Pausa longa</button>
             </div>
 
             <div className="progress-bar">
@@ -158,7 +158,7 @@ export default function Card({ theme, preferences }) {
                 <Button 
                     background={currentButtonColor}
                     type="button"
-                    onClick={handleStart}>{ !start ? 'Iniciar' : 'Parar' }</Button>
+                    onClick={() => setStart(prevState => !prevState)}>{ !start ? 'Iniciar' : 'Parar' }</Button>
 
                 <Steps>
                     <span>#{progress}</span>
