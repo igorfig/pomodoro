@@ -85,11 +85,6 @@ export default function Card({ theme, preferences }) {
                     audio.play();
                 }
 
-            if(timerOption === 'pomodoro' && preferences['pomodoro'] >= 6)  {
-                if(totalOfSeconds === 5 * 60) {
-
-                }
-            }
             return () => clearInterval(interval)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
