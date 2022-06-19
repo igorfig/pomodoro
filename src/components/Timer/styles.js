@@ -105,6 +105,14 @@ export const Container = styled.section`
       font-weight: 700;
     }
 
+    span.current-task {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: var(--black-font);
+      font-weight: 400;
+      word-break: break-all;
+    }
+
     div {
       display: flex;
       align-items: center;

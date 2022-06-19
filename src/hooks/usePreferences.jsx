@@ -7,7 +7,7 @@ const userPreferencesContext = createContext({});
 
 export function UserPreferencesProvider({ children }) {
     const [userPreferences, setUserPreferences] = useState(() => {
-        const preferences = Storage.get();
+        const preferences = Storage.get('user_preferences');
 
         return preferences ? preferences : {
             'pomodoro': 25,
@@ -23,7 +23,7 @@ export function UserPreferencesProvider({ children }) {
     const updatePreferences = useCallback(value => setUserPreferences(value), [])
 
     useEffect(() => {
-        Storage.set(userPreferences);
+        Storage.set('user_preferences', userPreferences);
     }, [userPreferences])
 
     return <userPreferencesContext.Provider value={{userPreferences, updatePreferences}}>

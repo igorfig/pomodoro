@@ -8,9 +8,9 @@ export const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 30px 30px 30px 30px;
+  border-radius: 30px;
   @media(max-width: 480px) {
-    margin-top: 35vh;
+    margin-top: 20vh;
   }
 
   div {

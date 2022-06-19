@@ -63,6 +63,18 @@ export default createGlobalStyle`
     * html ul li { float: left; }
     * html ul li a { height: 1%; }
 
+  label.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow:hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
   input,
   button {
     border: 0;
@@ -293,4 +305,5 @@ export default createGlobalStyle`
     width: 28px;
     height: 28px;
   }
+
 `;

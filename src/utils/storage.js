@@ -1,9 +1,9 @@
 export const Storage = {
-    get() {
-        return JSON.parse(localStorage.getItem('user_preferences'));
+    get(key) {
+        return JSON.parse(localStorage.getItem(key));
     },
     
-    set(data) {
-        localStorage.setItem('user_preferences', JSON.stringify(data))
+    set(key, data) {
+        localStorage.setItem(key, JSON.stringify(data))
     }
 }

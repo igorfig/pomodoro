@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from 'react-toastify';
 
-
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 
 import { Container } from "./styles";
@@ -12,10 +11,11 @@ import clockImg from '../../assets/images/clock.svg'
 import alarm from "../../assets/audio/alarm.mp3";
 import notificationSong from '../../assets/audio/notification.mp3'
 import { usePreferences } from "../../hooks/usePreferences";
+import { useTask } from '../../hooks/useTask';
 
-export function Timer() {
+export function Timer({ setTimeLeft, getTimerOption, setCurrentColor }) {
   const { userPreferences } = usePreferences();
-
+  const { taskSelected, updateActs } = useTask();
   const [timerOption, setTimerOption] = useState("pomodoro");
   const [timer, setTimer] = useState({
     "pomodoro": userPreferences["pomodoro"],
@@ -49,14 +49,15 @@ export function Timer() {
       "long-break": "#437EA8",
     };
     setCurrentButtonColor(Colors[timerOption]);
-  }, [timerOption]);
+    setCurrentColor(Colors[timerOption]);
+  }, [timerOption, setCurrentColor]);
 
   useEffect(() => {
     if(progress > 1) {
       if(timerOption === 'short-break' || timerOption === 'long-break') {
-        userPreferences["auto-start-break"] && setStart(true);
-      } if(timerOption === 'pomodoro') {
-        userPreferences["auto-start-pomodoro"] && setStart(true);
+        userPreferences["auto-start-break"] ? setStart(true) : setStart(false);
+      } else if(timerOption === 'pomodoro') {
+        userPreferences["auto-start-pomodoro"] ? setStart(true) : setStart(false);
       }
     }
   }, [timerOption, progress, userPreferences])
@@ -82,12 +83,20 @@ export function Timer() {
   }, [timer, timerOption]);
 
   useEffect(() => {
+    timerOption === 'pomodoro' ? setTimeLeft({
+      secondsAmount,
+      minutes,
+      seconds
+    }) : setTimeLeft({
+      secondsAmount,
+      minutes: String(Math.floor(((timer['pomodoro'] * 60) % 3600) / 60)).padStart(2, '0'),
+      seconds: String((timer['pomodoro'] * 60) % 60).padStart(2, '0')
+    })
     if (start) {
       const interval = setInterval(() => {
         setSecondsAmount((prevState) => prevState - 1);
       }, 1000);
       document.title = `${minutes}:${seconds} | Pomodoro Timer`;
-
       if (secondsAmount === 0) {
         setStart(false);
         setTimeout(() => {
@@ -165,6 +174,8 @@ export function Timer() {
 
     if (skipTimerConfirm) {
       setStart(false);
+      if(timerOption === 'pomodoro') updateActs();
+
         if(timerOption === 'short-break') {
             setTimerOption('pomodoro')
         } else if(timerOption === 'long-break') {
@@ -182,6 +193,10 @@ export function Timer() {
         }
     }
   };
+
+  useEffect(() => {
+    getTimerOption(timerOption);
+  }, [timerOption, getTimerOption])
 
   return (
     <Container color={currentButtonColor}>
@@ -274,6 +289,7 @@ export function Timer() {
 
       <div className="progress">
         <span>#{progress}</span>
+        <span className="current-task">{taskSelected && taskSelected.title}</span>
         <div>
           {new Array(userPreferences["long-break-interval"]).fill(0).map((_, index) => (
             <div key={index} className={progressBeforeBreak > index ? 'completed' : ''}></div>

@@ -2,11 +2,10 @@ import { Container } from './styles'
 
 import logo from '../../assets/images/logo.svg'
 import gearImg from '../../assets/images/gear.svg'
+import editImg from '../../assets/images/edit.svg'
 
 import { TimerSettings } from '../TimerSettings/index'
 import { useModal } from '../../hooks/useModal'
-
-
 
 export function Header() {
     const { isModalOpen, handleToggleModal } = useModal();

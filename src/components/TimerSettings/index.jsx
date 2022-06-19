@@ -24,7 +24,7 @@ export function TimerSettings() {
     const [notifications, setNotifications] = useState(userPreferences['notifications']);
     
 
-    const { handleToggleModal } = useModal();
+    const { isModalOpen, handleToggleModal } = useModal();
 
     function handleSubmit(e) {   
         e.preventDefault();
@@ -62,7 +62,7 @@ export function TimerSettings() {
     }, []);
     return (
         <Modal
-            isOpen={true}
+            isOpen={isModalOpen}
             onRequestClose={handleToggleModal}
             overlayClassName="settings-modal-overlay"
             className="settings-modal"
